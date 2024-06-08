@@ -16,14 +16,17 @@
         <h4 style="margin-top: 0;">CYOA Search</h1>
 
             <p>A simple Choose your own adventure (the interesting choices kinda, rather then the print book kind)
-                mostly pulled
-                from
-                <a href="https://www.reddit.com/r/makeyourchoice">r/makeyourchoice</a>
+                mostly pulled from
+                <a target="_blank" rel="noopener" href="https://www.reddit.com/r/makeyourchoice">r/makeyourchoice</a>
+                data is being built via <a target="_blank" rel="noopener"
+                    href="https://docs.google.com/spreadsheets/d/1_uUxjdztolJlJrm0Smv3gJAaYLBQxLKVklZsIOb7N_g/edit?usp=sharing">google
+                    sheets</a>
             </p>
 
-            <div class="flex-centered">
+            <div class="flex-centered" style="margin-bottom: 0.5rem;">
                 <input id="searchbox"></input>
                 <button class="" onclick="onSearch()" id="searchtrigger">Search</button>
+                <button class="" onclick="clearSearch()" id="cleartrigger">Clear</button>
             </div>
 
             <div id="card-grid"></div>
@@ -56,9 +59,11 @@
                 <div class="card-text">
                     <h5>${cyoaItem.name}</h5>
                     <p id="description">${cyoaItem.description}</p>
-                    <p id="creator">by ${cyoaItem.creator} @ <a target="_blank" href="${cyoaItem.home}"
-                            rel="noopener">www🏡</a> <span>Interactive: ${cyoaItem.isInteractive ? '✔️' : '❌'}</span></p>
-
+                    <p id="creator">by ${cyoaItem.creator} @ <a target="_blank" href="${cyoaItem.home}" rel="noopener">www🏡</a>
+                        </p>
+                    <p>
+                        <span>Interactive: ${cyoaItem.isInteractive ? '✔️' : '❌'}</span> <span>Jumpchain: ${cyoaItem.isJumpChain ? '✔️' : '❌'}</span>
+                    </p>
                     <p id="themes">Themes: ${cyoaItem.themes.join(', ')}</p>
                     <p id="franchise">Franchise: ${cyoaItem.franchise.join(', ')}</p>
                     <p id="mechanics">Mechanics: ${cyoaItem.mechanics.join(', ')}</p>
@@ -76,7 +81,7 @@
     }
 
     function buildCYOAs(cyoaItems) {
-        ElementGrid.append(...cyoaItems.map(cyoaItem => CYOATemplate(cyoaItem)))
+        ElementGrid.replaceChildren(...cyoaItems.map(cyoaItem => CYOATemplate(cyoaItem)))
     }
 
     run()
@@ -84,9 +89,21 @@
     function onSearch() {
         ElementSearchBtn.setAttribute('disabled', true)
 
+        const shownCYOAS = allCYOAS.filter(cyoa => `${cyoa.name}${cyoa.creator}${cyoa.themes.join()}${cyoa.franchise.join()}${cyoa.mechanics.join()}${cyoa.description}`.toLowerCase().includes(ElementInput.value.toLowerCase().trim()))
+        buildCYOAs(shownCYOAS)
 
-        ElementSearchBtn.setAttribute('disabled', false)
+        ElementSearchBtn.removeAttribute('disabled')
     }
+
+    function clearSearch() {
+        buildCYOAs(allCYOAS)
+    }
+
+    ElementInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            onSearch()
+        }
+    });
 </script>
 
 </html>

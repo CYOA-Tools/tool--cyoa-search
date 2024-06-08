@@ -26,14 +26,15 @@ try {
             creator: key[2],
             home: key[3],
             isInteractive: key[4] === "t" || key[4] === "T",
-            themes: key[5].split(",").map(v => v.trim()),
-            franchise: key[6].split(",").map(v => v.trim()),
-            mechanics: key[7].split(",").map(v => v.trim()),
-            imageLink: key[8],
-            description: key[9],
-            version: key[10],
-            upvotes: parseInt(key[11]) ?? 0,
-            altLink: key[12]
+            isJumpChain: key[5] === "t" || key[5] === "T",
+            themes: key[6].split(",").map(v => v.trim()),
+            franchise: key[7].split(",").map(v => v.trim()),
+            mechanics: key[8].split(",").map(v => v.trim()),
+            imageLink: key[9],
+            description: key[10],
+            version: key[12],
+            upvotes: parseInt(key[12]) ?? 0,
+            altLink: key[13]
         })).sort((a, b) => a.upvotes - b.upvotes);
 
         fs.writeFile("./data.json", JSON.stringify(JSONData, null, 2), (error) => {
