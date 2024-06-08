@@ -28,7 +28,7 @@ try {
             isInteractive: key[4] === "t" || key[4] === "T",
             themes: key[5].split(",").map(v => v.trim()),
             franchise: key[6].split(",").map(v => v.trim()),
-            mechnics: key[7].split(",").map(v => v.trim()),
+            mechanics: key[7].split(",").map(v => v.trim()),
             imageLink: key[8],
             description: key[9],
             version: key[10],

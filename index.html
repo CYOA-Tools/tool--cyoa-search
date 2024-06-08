@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CYOA Search</title>
+    <script src="./index.js"></script>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/concrete.css/3.0.0/concrete.min.css">
+
+</head>
+
+<body>
+    <main>
+        <h4 style="margin-top: 0;">CYOA Search</h1>
+
+            <p>A simple Choose your own adventure (the interesting choices kinda, rather then the print book kind)
+                mostly pulled
+                from
+                <a href="https://www.reddit.com/r/makeyourchoice">r/makeyourchoice</a>
+            </p>
+
+            <div class="flex-centered">
+                <input id="searchbox"></input>
+                <button class="" onclick="onSearch()" id="searchtrigger">Search</button>
+            </div>
+
+            <div class="card-grid"></div>
+
+            <div class="card">
+                <div class="card-image">
+                    <img src="https://adventure-dark-forest.onrender.com/images/archetype-human-druid.webp" />
+                </div>
+                <div class="card-text">
+                    <h5>Dark Forest</h5>
+                    <p id="creator">by FanasticPortals @ <a target="_blank" href="https://github.com/CYOA-Tools"
+                            rel="noopener">www🏡</a> <span>Interactive: ✔️ or ❌</span></p>
+
+                    <p id="themes">Themes: fantasy, celtic</p>
+                    <p id="franchise">Franchise: </p>
+                    <p id="mechanics">Mechanics: </p>
+                    <p id="description">description... </p>
+                    <div id="'play">
+                        <a href="" target="_blank" rel="noopener"><button>Play</button></a>
+                        <a href="" target="_blank" rel="noopener"><button>Play Alt</button></a>
+                    </div>
+                    <p id="info" style="margin-bottom: 0;">
+                        <span>V: 01.00</span> <span>upvotes: 60</span>
+                    </p>
+                </div>
+
+            </div>
+    </main>
+
+</body>
+
+<script defer>
+    const ElementInput = document.getElementById('searchbox')
+    const ElementSearchBtn = document.getElementById('searchtrigger')
+
+    let shownCYOAs = [];
+
+    console.log("-")
+    async function run() {
+        const response = await fetch("./data.json");
+        const json = await response.json()
+        shownCYOAs = json;
+
+        console.log("2", json)
+
+    }
+
+    function CYOATemplate() {
+        return ``
+    }
+
+    function buildCYOAs() {
+
+    }
+
+    run()
+
+    function onSearch() {
+        ElementSearchBtn.setAttribute('disabled', true)
+
+
+        ElementSearchBtn.setAttribute('disabled', false)
+    }
+</script>
+
+</html>

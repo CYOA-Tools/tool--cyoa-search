@@ -1,0 +1,63 @@
+html body {
+    background: url("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hs-2009-25-e-full.jpg/859px-Hs-2009-25-e-full.jpg") no-repeat;
+    background-size: cover;
+    padding: 3rem 1.5rem;
+}
+
+html main {
+    padding: 3rem;
+    background: rgba(136, 205, 222, 0.4);
+    max-width: 90vw;
+}
+
+html p {
+    font-size: 14px;
+}
+
+.flex-centered {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.card-grid {
+    display: grid;
+
+}
+
+.card {
+    display: flex;
+    background: #3730a3;
+    border-radius: 0.75rem;
+    border: 0.25rem solid #1e1b4b;
+    overflow: hidden;
+}
+
+.card .card-image {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+
+.card .card-image img {
+    height: 100px;
+    flex-grow: 1;
+    object-fit: cover;
+}
+
+.card .card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem;
+}
+
+.card .card-text>h5 {
+    margin-top: 0px;
+    margin-bottom: 0.75rem;
+}
+
+.card p {
+    margin-top: 0px;
+    margin-bottom: 0.5rem;
+}
