@@ -1,13 +1,18 @@
 html body {
     background: url("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hs-2009-25-e-full.jpg/859px-Hs-2009-25-e-full.jpg") no-repeat;
     background-size: cover;
-    padding: 3rem 1.5rem;
+    padding: 1.5rem;
 }
 
-html main {
-    padding: 3rem;
+html body main {
+    padding: 2rem;
     background: rgba(136, 205, 222, 0.4);
-    max-width: 90vw;
+    max-width: 96vw;
+}
+@media (min-width: 1200px) {
+    html body main {
+        max-width: 90vw;
+    }
 }
 
 html p {
@@ -20,12 +25,32 @@ html p {
     gap: 2rem;
 }
 
-.card-grid {
+#card-grid {
     display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1rem;
+}
 
+@media (min-width: 1000px) {
+    #card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1400px) {
+    #card-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1800px) {
+    #card-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
 }
 
 .card {
+    height: 100%;
     display: flex;
     background: #3730a3;
     border-radius: 0.75rem;

@@ -26,31 +26,7 @@
                 <button class="" onclick="onSearch()" id="searchtrigger">Search</button>
             </div>
 
-            <div class="card-grid"></div>
-
-            <div class="card">
-                <div class="card-image">
-                    <img src="https://adventure-dark-forest.onrender.com/images/archetype-human-druid.webp" />
-                </div>
-                <div class="card-text">
-                    <h5>Dark Forest</h5>
-                    <p id="creator">by FanasticPortals @ <a target="_blank" href="https://github.com/CYOA-Tools"
-                            rel="noopener">www🏡</a> <span>Interactive: ✔️ or ❌</span></p>
-
-                    <p id="themes">Themes: fantasy, celtic</p>
-                    <p id="franchise">Franchise: </p>
-                    <p id="mechanics">Mechanics: </p>
-                    <p id="description">description... </p>
-                    <div id="'play">
-                        <a href="" target="_blank" rel="noopener"><button>Play</button></a>
-                        <a href="" target="_blank" rel="noopener"><button>Play Alt</button></a>
-                    </div>
-                    <p id="info" style="margin-bottom: 0;">
-                        <span>V: 01.00</span> <span>upvotes: 60</span>
-                    </p>
-                </div>
-
-            </div>
+            <div id="card-grid"></div>
     </main>
 
 </body>
@@ -58,25 +34,49 @@
 <script defer>
     const ElementInput = document.getElementById('searchbox')
     const ElementSearchBtn = document.getElementById('searchtrigger')
+    const ElementGrid = document.getElementById('card-grid')
 
-    let shownCYOAs = [];
+    let allCYOAS = [];
 
-    console.log("-")
     async function run() {
         const response = await fetch("./data.json");
         const json = await response.json()
-        shownCYOAs = json;
-
-        console.log("2", json)
-
+        allCYOAS = json;
+        buildCYOAs(allCYOAS)
     }
 
-    function CYOATemplate() {
-        return ``
+    function CYOATemplate(cyoaItem) {
+        const rootElement = document.createElement("div");
+        rootElement.className = 'card-root';
+        rootElement.id = cyoaItem.name.replaceAll(' ', '-');
+        rootElement.innerHTML = `<div class="card">
+                <div class="card-image">
+                    <img src="${cyoaItem.imageLink}" />
+                </div>
+                <div class="card-text">
+                    <h5>${cyoaItem.name}</h5>
+                    <p id="description">${cyoaItem.description}</p>
+                    <p id="creator">by ${cyoaItem.creator} @ <a target="_blank" href="${cyoaItem.home}"
+                            rel="noopener">www🏡</a> <span>Interactive: ${cyoaItem.isInteractive ? '✔️' : '❌'}</span></p>
+
+                    <p id="themes">Themes: ${cyoaItem.themes.join(', ')}</p>
+                    <p id="franchise">Franchise: ${cyoaItem.franchise.join(', ')}</p>
+                    <p id="mechanics">Mechanics: ${cyoaItem.mechanics.join(', ')}</p>
+                    <div id="play">
+                        <a href="${cyoaItem.link}" target="_blank" rel="noopener"><button>Play</button></a>
+                        ${!!cyoaItem.altLink ? '<a href="' + cyoaItem.altLink + '" target="_blank" rel="noopener"><button>Play Alt</button></a>' : ''}
+                    </div>
+                    <p id="info" style="margin-bottom: 0;">
+                        <span>V: ${cyoaItem.version}</span> <span>upvotes: ${cyoaItem.upvotes}</span>
+                    </p>
+                </div>
+            </div>`
+
+        return rootElement;
     }
 
-    function buildCYOAs() {
-
+    function buildCYOAs(cyoaItems) {
+        ElementGrid.append(...cyoaItems.map(cyoaItem => CYOATemplate(cyoaItem)))
     }
 
     run()
