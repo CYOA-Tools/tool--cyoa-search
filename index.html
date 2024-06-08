@@ -41,7 +41,7 @@
     async function run() {
         const response = await fetch("./data.json");
         const json = await response.json()
-        allCYOAS = json;
+        allCYOAS = json.sort((a, b) => b.upvotes - a.upvotes);
         buildCYOAs(allCYOAS)
     }
 

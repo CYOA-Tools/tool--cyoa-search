@@ -32,7 +32,7 @@ try {
             imageLink: key[8],
             description: key[9],
             version: key[10],
-            upvotes: parseInt(key[11]),
+            upvotes: parseInt(key[11]) ?? 0,
             altLink: key[12]
         })).sort((a, b) => a.upvotes - b.upvotes);
 
