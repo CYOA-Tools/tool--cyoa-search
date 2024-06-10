@@ -1,6 +1,6 @@
 html body {
-    background: url("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hs-2009-25-e-full.jpg/859px-Hs-2009-25-e-full.jpg") no-repeat;
-    background-size: cover;
+    background: url("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hs-2009-25-e-full.jpg/859px-Hs-2009-25-e-full.jpg");
+    background-size: 100%;
     padding: 1.5rem;
 }
 

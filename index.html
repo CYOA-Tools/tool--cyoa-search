@@ -31,13 +31,17 @@
                 </div>
 
                 <div class="flex-centered" style="margin-bottom: 0.5rem;">
-                    <div class="flex-centered-sm">
-                        <label for="is-interactive">Interactive</label>
-                        <input type="checkbox" id="is-interactive" name="is-interactive" checked />
-                    </div>
+                    <fieldset class="flex-centered-sm" id="interactive-options" >
+                        <label for="is-interactive" style="font-weight: 600;">Interactive: </label>
+                        <input type="radio" id="interactive-hide" name="interactive" value="hide" />
+                        <label for="interactive-hide">Hide</label>
+                        <input type="radio" id="interactive-show" name="interactive" value="show" checked />
+                        <label for="interactive-show">Show</label>
+                        <input type="radio" id="interactive-only" name="interactive" value="only" />
+                        <label for="interactive-only">Only</label>
+                    </fieldset>
 
-
-                    <fieldset class="flex-centered-sm" id="jumpchain-options" name="jumpchain-opts">
+                    <fieldset class="flex-centered-sm" id="jumpchain-options">
                         <label for="is-jumpchain" style="font-weight: 600;">Jumpchain: </label>
                         <input type="radio" id="jumpchain-hide" name="jumpchain" value="hide" />
                         <label for="jumpchain-hide">Hide</label>
@@ -59,8 +63,6 @@
     const ElementInput = document.getElementById('searchbox')
     const ElementSearchBtn = document.getElementById('searchtrigger')
     const ElementGrid = document.getElementById('card-grid')
-    const ElementInteractiveCheckboxInput = document.getElementById('is-interactive')
-    const ElementJumpchainCheckboxInput = document.getElementById('is-jumpchain')
     const Rootform = document.getElementById("root-form");
 
     let allCYOAS = [];
@@ -117,12 +119,17 @@
     function onSearch() {
         ElementSearchBtn.setAttribute('disabled', true)
 
+        const interactiveOptions = Rootform.elements.interactive.value;
+        console.log('interactiveOptions', interactiveOptions)
         const jumpchainOptions = Rootform.elements.jumpchain.value;
 
         const shownCYOAS = allCYOAS.filter(cyoa => {
             let allFilters = true;
 
-            if (!ElementInteractiveCheckboxInput.checked && cyoa.isInteractive) {
+            if (interactiveOptions === 'hide' && cyoa.isInteractive) {
+                allFilters = false;
+            }
+            if (interactiveOptions === 'only' && !cyoa.isInteractive) {
                 allFilters = false;
             }
             if (jumpchainOptions === 'hide' && cyoa.isJumpChain) {
@@ -142,8 +149,8 @@
     function clearSearch() {
         buildCYOAs(allCYOAS)
         ElementInput.value = ""
-        ElementInteractiveCheckboxInput.checked = true
         Rootform.elements.jumpchain.value = 'show'
+        Rootform.elements.interactive.value = 'show'
     }
 
     ElementInput.addEventListener("keypress", function (event) {
@@ -152,7 +159,7 @@
         }
     });
 
-    ElementInteractiveCheckboxInput.addEventListener('change', (event) => {
+    Rootform.elements['interactive-options'].addEventListener('change', (event) => {
         onSearch()
     })
     Rootform.elements['jumpchain-options'].addEventListener('change', (event) => {
