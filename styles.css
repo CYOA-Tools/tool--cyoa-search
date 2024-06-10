@@ -22,24 +22,39 @@ html button {
     font-size: 14px;
 }
 
+.flex-centered-sm,
 .flex-centered {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 2rem;
 }
+.flex-centered-sm {
+    gap: 0.5rem;
+}
 
 html button {
     margin: 0;
 }
 
-html input {
+html input[type="text"] {
     padding: .2rem .5rem;
     border-radius: 12px;
     border: 1px solid #1e1b4b;
     margin: 0;
     background: rgba(255, 255, 255, 0.8);
     width: 16rem;
+}
+
+html label {
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+}
+
+html input[type="checkbox"] {
+    margin: 0;
+    background: rgba(255, 255, 255, 0.8);
 }
 
 #card-grid {

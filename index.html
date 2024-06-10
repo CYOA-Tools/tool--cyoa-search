@@ -24,9 +24,21 @@
             </p>
 
             <div class="flex-centered" style="margin-bottom: 0.5rem;">
-                <input id="searchbox"></input>
+                <input id="searchbox" type="text"></input>
                 <button class="" onclick="onSearch()" id="searchtrigger">Search</button>
                 <button class="" onclick="clearSearch()" id="cleartrigger">Clear</button>
+            </div>
+
+            <div class="flex-centered" style="margin-bottom: 0.5rem;">
+                <div class="flex-centered-sm">
+                    <label for="is-interactive">Interactive</label>
+                    <input type="checkbox" id="is-interactive" name="is-interactive" checked />
+                </div>
+                
+                <div class="flex-centered-sm">
+                    <label for="is-jumpchain">Jumpchain</label>
+                    <input type="checkbox" id="is-jumpchain" name="is-jumpchain" checked />
+                </div>
             </div>
 
             <div id="card-grid"></div>
@@ -38,6 +50,8 @@
     const ElementInput = document.getElementById('searchbox')
     const ElementSearchBtn = document.getElementById('searchtrigger')
     const ElementGrid = document.getElementById('card-grid')
+    const ElementInteractiveCheckboxInput = document.getElementById('is-interactive')
+    const ElementJumpchainCheckboxInput = document.getElementById('is-jumpchain')
 
     let allCYOAS = [];
 
@@ -62,7 +76,7 @@
                     <p id="creator">by ${cyoaItem.creator} @ <a target="_blank" href="${cyoaItem.home}" rel="noopener">www🏡</a>
                         </p>
                     <p>
-                        <span>Interactive: ${cyoaItem.isInteractive ? '✔️' : '❌'}</span> <span>Jumpchain: ${cyoaItem.isJumpChain ? '✔️' : '❌'}</span>
+                        <span>Show Interactive: ${cyoaItem.isInteractive ? '✔️' : '❌'}</span> <span>Show Jumpchain: ${cyoaItem.isJumpChain ? '✔️' : '❌'}</span>
                     </p>
                     <p id="themes">Themes: ${cyoaItem.themes.join(', ')}</p>
                     <p id="franchise">Franchise: ${cyoaItem.franchise.join(', ')}</p>
@@ -89,7 +103,20 @@
     function onSearch() {
         ElementSearchBtn.setAttribute('disabled', true)
 
-        const shownCYOAS = allCYOAS.filter(cyoa => `${cyoa.name}${cyoa.creator}${cyoa.themes.join()}${cyoa.franchise.join()}${cyoa.mechanics.join()}${cyoa.description}`.toLowerCase().includes(ElementInput.value.toLowerCase().trim()))
+        console.log('event', ElementInteractiveCheckboxInput.checked)
+
+        const shownCYOAS = allCYOAS.filter(cyoa => {
+            let allFilters = true;
+
+            if (!ElementInteractiveCheckboxInput.checked && cyoa.isInteractive) {
+                allFilters = false;
+            }
+            if(!ElementJumpchainCheckboxInput.checked && cyoa.isJumpChain) {
+                allFilters = false;
+            }
+
+            return allFilters && `${cyoa.name}${cyoa.creator}${cyoa.themes.join()}${cyoa.franchise.join()}${cyoa.mechanics.join()}${cyoa.description}`.toLowerCase().includes(ElementInput.value.toLowerCase().trim())
+        })
         buildCYOAs(shownCYOAS)
 
         ElementSearchBtn.removeAttribute('disabled')
@@ -97,6 +124,9 @@
 
     function clearSearch() {
         buildCYOAs(allCYOAS)
+        ElementInput.value = ""
+        ElementInteractiveCheckboxInput.checked = true
+        ElementJumpchainCheckboxInput.checked = true
     }
 
     ElementInput.addEventListener("keypress", function (event) {
@@ -104,6 +134,13 @@
             onSearch()
         }
     });
+
+    ElementInteractiveCheckboxInput.addEventListener('change', (event) => {
+        onSearch()
+    })
+    ElementJumpchainCheckboxInput.addEventListener('change', (event) => {
+        onSearch()
+    })
 </script>
 
 </html>
