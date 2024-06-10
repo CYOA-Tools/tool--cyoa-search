@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CYOA Search</title>
-    <script src="./index.js"></script>
     <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/concrete.css/3.0.0/concrete.min.css">
 
@@ -23,23 +22,33 @@
                     sheets</a>
             </p>
 
-            <div class="flex-centered" style="margin-bottom: 0.5rem;">
-                <input id="searchbox" type="text"></input>
-                <button class="" onclick="onSearch()" id="searchtrigger">Search</button>
-                <button class="" onclick="clearSearch()" id="cleartrigger">Clear</button>
-            </div>
+            <form id="root-form" onsubmit="onSubmit">
 
-            <div class="flex-centered" style="margin-bottom: 0.5rem;">
-                <div class="flex-centered-sm">
-                    <label for="is-interactive">Interactive</label>
-                    <input type="checkbox" id="is-interactive" name="is-interactive" checked />
+                <div class="flex-centered" style="margin-bottom: 0.5rem;">
+                    <input id="searchbox" type="text"></input>
+                    <button class="" onclick="onSearch()" id="searchtrigger" type="button">Search</button>
+                    <button class="" onclick="clearSearch()" id="cleartrigger" type="button">Clear</button>
                 </div>
-                
-                <div class="flex-centered-sm">
-                    <label for="is-jumpchain">Jumpchain</label>
-                    <input type="checkbox" id="is-jumpchain" name="is-jumpchain" checked />
+
+                <div class="flex-centered" style="margin-bottom: 0.5rem;">
+                    <div class="flex-centered-sm">
+                        <label for="is-interactive">Interactive</label>
+                        <input type="checkbox" id="is-interactive" name="is-interactive" checked />
+                    </div>
+
+
+                    <fieldset class="flex-centered-sm" id="jumpchain-options" name="jumpchain-opts">
+                        <label for="is-jumpchain" style="font-weight: 600;">Jumpchain: </label>
+                        <input type="radio" id="jumpchain-hide" name="jumpchain" value="hide" />
+                        <label for="jumpchain-hide">Hide</label>
+                        <input type="radio" id="jumpchain-show" name="jumpchain" value="show" checked />
+                        <label for="jumpchain-show">Show</label>
+                        <input type="radio" id="jumpchain-only" name="jumpchain" value="only" />
+                        <label for="jumpchain-only">Only</label>
+                    </fieldset>
+
                 </div>
-            </div>
+            </form>
 
             <div id="card-grid"></div>
     </main>
@@ -52,8 +61,13 @@
     const ElementGrid = document.getElementById('card-grid')
     const ElementInteractiveCheckboxInput = document.getElementById('is-interactive')
     const ElementJumpchainCheckboxInput = document.getElementById('is-jumpchain')
+    const Rootform = document.getElementById("root-form");
 
     let allCYOAS = [];
+
+    function onSubmit(evt) {
+        evt.preventDefault()
+    }
 
     async function run() {
         const response = await fetch("./data.json");
@@ -76,7 +90,7 @@
                     <p id="creator">by ${cyoaItem.creator} @ <a target="_blank" href="${cyoaItem.home}" rel="noopener">www🏡</a>
                         </p>
                     <p>
-                        <span>Show Interactive: ${cyoaItem.isInteractive ? '✔️' : '❌'}</span> <span>Show Jumpchain: ${cyoaItem.isJumpChain ? '✔️' : '❌'}</span>
+                        <span>Interactive: ${cyoaItem.isInteractive ? '✔️' : '❌'}</span> <span>Jumpchain: ${cyoaItem.isJumpChain ? '✔️' : '❌'}</span>
                     </p>
                     <p id="themes">Themes: ${cyoaItem.themes.join(', ')}</p>
                     <p id="franchise">Franchise: ${cyoaItem.franchise.join(', ')}</p>
@@ -103,7 +117,7 @@
     function onSearch() {
         ElementSearchBtn.setAttribute('disabled', true)
 
-        console.log('event', ElementInteractiveCheckboxInput.checked)
+        const jumpchainOptions = Rootform.elements.jumpchain.value;
 
         const shownCYOAS = allCYOAS.filter(cyoa => {
             let allFilters = true;
@@ -111,7 +125,10 @@
             if (!ElementInteractiveCheckboxInput.checked && cyoa.isInteractive) {
                 allFilters = false;
             }
-            if(!ElementJumpchainCheckboxInput.checked && cyoa.isJumpChain) {
+            if (jumpchainOptions === 'hide' && cyoa.isJumpChain) {
+                allFilters = false;
+            }
+            if (jumpchainOptions === 'only' && !cyoa.isJumpChain) {
                 allFilters = false;
             }
 
@@ -126,7 +143,7 @@
         buildCYOAs(allCYOAS)
         ElementInput.value = ""
         ElementInteractiveCheckboxInput.checked = true
-        ElementJumpchainCheckboxInput.checked = true
+        Rootform.elements.jumpchain.value = 'show'
     }
 
     ElementInput.addEventListener("keypress", function (event) {
@@ -138,7 +155,7 @@
     ElementInteractiveCheckboxInput.addEventListener('change', (event) => {
         onSearch()
     })
-    ElementJumpchainCheckboxInput.addEventListener('change', (event) => {
+    Rootform.elements['jumpchain-options'].addEventListener('change', (event) => {
         onSearch()
     })
 </script>
