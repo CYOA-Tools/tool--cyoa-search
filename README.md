@@ -7,5 +7,4 @@ https://cyoa-search.onrender.com/
 
 ##### To Add
 
-- radio filters
 - favourites
