@@ -32,7 +32,7 @@ try {
             mechanics: key[8].split(",").map(v => v.trim()),
             imageLink: key[9],
             description: key[10],
-            version: key[12],
+            version: key[11],
             upvotes: parseInt(key[12]) ?? 0,
             altLink: key[13]
         })).sort((a, b) => a.upvotes - b.upvotes);

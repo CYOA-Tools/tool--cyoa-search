@@ -3,3 +3,9 @@ Builds a  search page from excel sheet for Choose your own adventures (the inter
 
 #### visit
 https://cyoa-search.onrender.com/
+
+
+##### To Add
+
+- radio filters
+- favourites
